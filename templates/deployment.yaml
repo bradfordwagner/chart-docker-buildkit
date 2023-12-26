@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fullname" . }}
+  labels:
+    {{- include "labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      {{- include "selector_labels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "selector_labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: main
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          resources: {{ .Values.resources | toYaml | nindent 11 }}
+          command:
+            - /bin/bash
+            - -lc
+            - |
+              echo hello world
+              sleep 10000000
