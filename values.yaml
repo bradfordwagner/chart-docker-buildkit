@@ -2,6 +2,5 @@ driver:
   image:
     repository: moby/buildkit
     tag: v0.12.4
-    # tag: buildx-stable-1
   name: kube
   replicas: 1
