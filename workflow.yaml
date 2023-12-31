@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: gh-template-helm-chart-
+  generateName: chart-docker-kubernetes-driver-
 spec:
   ttlStrategy:
     secondsAfterCompletion: 3600 # delete workflow after 1 hour
@@ -26,7 +26,7 @@ spec:
           - name: git_ref_type
             value: "{{ inputs.parameters.git_ref_type }}"
           - name: git_repo
-            value: https://github.com/bradfordwagner/gh-template-chart.git
+            value: https://github.com/bradfordwagner/chart-docker-kubernetes-driver.git
           - name: git_version
             value: "{{ inputs.parameters.git_version }}"
           - name: helm_image
