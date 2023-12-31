@@ -1,27 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "fullname" . }}
   labels:
-    {{- include "labels" . | nindent 4 }}
+    {{- include "selector_labels" . | nindent 6 }}
+  name: {{ .Values.driver.name }}
 spec:
-  replicas: {{ .Values.replicas }}
+  replicas: {{ .Values.driver.replicas }}
   selector:
     matchLabels:
-      {{- include "selector_labels" . | nindent 6 }}
+      {{- include "selector_labels" . | nindent 8 }}
   template:
     metadata:
       labels:
-        {{- include "selector_labels" . | nindent 8 }}
+      {{- include "selector_labels" . | nindent 8 }}
     spec:
       containers:
-        - name: main
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: IfNotPresent
-          resources: {{ .Values.resources | toYaml | nindent 11 }}
-          command:
-            - /bin/bash
-            - -lc
-            - |
-              echo hello world
-              sleep 10000000
+      - image: {{ .Values.driver.image.repository }}:{{ .Values.driver.image.tag }}
+        imagePullPolicy: IfNotPresent
+        name: main
+        readinessProbe:
+          exec:
+            command:
+            - buildctl
+            - debug
+            - workers
+        resources: {}
+        securityContext:
+          privileged: true
+      securityContext: {}

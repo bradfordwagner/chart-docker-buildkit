@@ -1,5 +1,5 @@
 apiVersion: v2
-name: bradfordwagner-helloworld
-description: A Helm chart for Kubernetes
+name: bradfordwagner-docker-kubernetes-buildkit-driver
+description: Installs docker kubernetes buildkit driver
 type: application
 version: 1.0.0
