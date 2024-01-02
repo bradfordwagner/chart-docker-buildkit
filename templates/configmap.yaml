@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.driver.name }}
+data:
+  buildkitd.toml: |
+    # root is where all buildkit state is stored.
+    root = "/var/lib/buildkit"
