@@ -27,4 +27,16 @@ spec:
         resources: {}
         securityContext:
           privileged: true
+        volumeMounts:
+        - mountPath: /var/lib/buildkit
+          name: data
+        - mountPath: /etc/buildkit
+          name: config
       securityContext: {}
+      volumes:
+      - name: config
+        configMap:
+          name: {{ .Values.driver.name }}
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ .Values.driver.name }}

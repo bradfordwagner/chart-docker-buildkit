@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.driver.name }}
+  labels:
+    {{- include "selector_labels" . | nindent 6 }}
+data:
+  # https://docs.docker.com/build/buildkit/configure/
+  # https://docs.docker.com/build/buildkit/toml-configuration/
+  buildkitd.toml: |
+    # root is where all buildkit state is stored.
+    root = "/var/lib/buildkit"

@@ -4,3 +4,5 @@ driver:
     tag: v0.12.4
   name: kube
   replicas: 1
+  pvc:
+    storage: 25Gi
