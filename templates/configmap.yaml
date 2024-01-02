@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.driver.name }}
 data:
+  # https://docs.docker.com/build/buildkit/configure/
+  # https://docs.docker.com/build/buildkit/toml-configuration/
   buildkitd.toml: |
     # root is where all buildkit state is stored.
     root = "/var/lib/buildkit"
