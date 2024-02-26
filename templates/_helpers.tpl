@@ -11,5 +11,5 @@
 {{- end }}
 
 {{- define "selector_labels" -}}
-app: {{ .Values.driver.name }}
+app: {{ .Release.Name }}
 {{- end }}

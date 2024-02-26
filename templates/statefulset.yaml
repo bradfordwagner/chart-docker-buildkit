@@ -1,0 +1,53 @@
+{{- $driver_name := .Release.Name }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: {{ $driver_name }}
+  name: {{ $driver_name }}
+spec:
+  serviceName: {{ $driver_name }}
+  podManagementPolicy: Parallel
+  replicas: {{ .Values.driver.replicas }}
+  selector:
+    matchLabels: {{- include "selector_labels" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "selector_labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: main
+          imagePullPolicy: {{ .Values.driver.image.pull_policy }}
+          image: {{ .Values.driver.image.repository }}:{{ .Values.driver.image.tag }}
+          readinessProbe:
+            exec:
+              command:
+                - buildctl
+                - debug
+                - workers
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          livenessProbe:
+            exec:
+              command:
+                - buildctl
+                - debug
+                - workers
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          securityContext:
+            privileged: true
+          volumeMounts:
+          - mountPath: /var/lib/buildkit
+            name: data
+          - mountPath: /etc/buildkit
+            name: config
+      volumes:
+      - name: config
+        configMap:
+          name: {{ $driver_name }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec: {{- toYaml .Values.driver.volumeClaimTemplate | nindent 10 }}
+

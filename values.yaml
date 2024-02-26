@@ -1,8 +1,11 @@
 driver:
   image:
+    pull_policy: IfNotPresent
     repository: moby/buildkit
-    tag: v0.12.4
-  name: kube
+    tag: v0.12.5
   replicas: 1
-  pvc:
-    storage: 25Gi
+  volumeClaimTemplate:
+    accessModes: [ "ReadWriteOnce" ]
+    resources:
+      requests:
+        storage: 25Gi
