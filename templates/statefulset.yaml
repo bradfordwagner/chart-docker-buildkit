@@ -2,8 +2,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  labels:
-    app: {{ $driver_name }}
+  labels: {{- include "selector_labels" . | nindent 4 }}
   name: {{ $driver_name }}
 spec:
   serviceName: {{ $driver_name }}
@@ -42,6 +41,9 @@ spec:
             name: data
           - mountPath: /etc/buildkit
             name: config
+          {{- if .Values.driver.envFrom }}
+          envFrom: {{- tpl .Values.driver.envFrom . | nindent 12 }}
+          {{- end }}
       volumes:
       - name: config
         configMap:
