@@ -6,6 +6,8 @@ driver:
   replicas: 1
   # templatable string which will be used to set environment variables for the driver
   envFrom: ""
+  extraVolumes: ""
+  extraVolumeMounts: ""
   volumeClaimTemplate:
     accessModes: [ "ReadWriteOnce" ]
     resources:
