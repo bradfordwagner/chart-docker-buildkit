@@ -10,3 +10,5 @@ data:
   buildkitd.toml: |
     # root is where all buildkit state is stored.
     root = "/var/lib/buildkit"
+    # exposed app configuration
+    {{- tpl .Values.driver.config . | nindent 6 }}

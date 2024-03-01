@@ -25,7 +25,7 @@ spec:
                 - debug
                 - workers
             initialDelaySeconds: 5
-            periodSeconds: 30
+            periodSeconds: 5
           livenessProbe:
             exec:
               command:
@@ -33,7 +33,7 @@ spec:
                 - debug
                 - workers
             initialDelaySeconds: 5
-            periodSeconds: 30
+            periodSeconds: 5
           securityContext:
             privileged: true
           volumeMounts:
