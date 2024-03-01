@@ -1,8 +1,17 @@
 driver:
   image:
+    pull_policy: IfNotPresent
     repository: moby/buildkit
-    tag: v0.12.4
-  name: kube
+    tag: v0.12.5
   replicas: 1
-  pvc:
-    storage: 25Gi
+  # templatable configurationsy
+  config: ""
+  # templatable string which will be used to set environment variables for the driver
+  envFrom: ""
+  extraVolumes: ""
+  extraVolumeMounts: ""
+  volumeClaimTemplate:
+    accessModes: [ "ReadWriteOnce" ]
+    resources:
+      requests:
+        storage: 25Gi

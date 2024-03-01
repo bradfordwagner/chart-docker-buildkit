@@ -1,0 +1,61 @@
+{{- $driver_name := .Release.Name }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels: {{- include "selector_labels" . | nindent 4 }}
+  name: {{ $driver_name }}
+spec:
+  serviceName: {{ $driver_name }}
+  podManagementPolicy: Parallel
+  replicas: {{ .Values.driver.replicas }}
+  selector:
+    matchLabels: {{- include "selector_labels" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "selector_labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: main
+          imagePullPolicy: {{ .Values.driver.image.pull_policy }}
+          image: {{ .Values.driver.image.repository }}:{{ .Values.driver.image.tag }}
+          readinessProbe:
+            exec:
+              command:
+                - buildctl
+                - debug
+                - workers
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            exec:
+              command:
+                - buildctl
+                - debug
+                - workers
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - mountPath: /var/lib/buildkit
+              name: data
+            - mountPath: /etc/buildkit
+              name: config
+            {{- if .Values.driver.extraVolumeMounts }}
+              {{- tpl .Values.driver.extraVolumeMounts . | nindent 12 }}
+            {{- end }}
+          {{- if .Values.driver.envFrom }}
+          envFrom: {{- tpl .Values.driver.envFrom . | nindent 12 }}
+          {{- end }}
+      volumes:
+      - name: config
+        configMap:
+          name: {{ $driver_name }}
+      {{- if .Values.driver.extraVolumes }}
+      {{- tpl .Values.driver.extraVolumes . | nindent 6 }}
+      {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec: {{- toYaml .Values.driver.volumeClaimTemplate | nindent 10 }}
+
