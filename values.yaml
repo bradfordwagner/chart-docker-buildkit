@@ -10,6 +10,12 @@ driver:
   envFrom: ""
   extraVolumes: ""
   extraVolumeMounts: ""
+  port: 1234
+  args:
+    - --addr
+    - tcp://0.0.0.0:{{ .Values.driver.port }}
+    - --addr
+    - unix:///run/buildkit/buildkitd.sock
   volumeClaimTemplate:
     accessModes: [ "ReadWriteOnce" ]
     resources:
