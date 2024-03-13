@@ -18,6 +18,9 @@ spec:
         - name: main
           imagePullPolicy: {{ .Values.driver.image.pull_policy }}
           image: {{ .Values.driver.image.repository }}:{{ .Values.driver.image.tag }}
+          args: {{- range .Values.driver.args }}
+            - {{ tpl . $ }}
+          {{- end }}
           readinessProbe:
             exec:
               command:
