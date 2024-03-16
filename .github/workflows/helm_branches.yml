@@ -1,4 +1,4 @@
-name: helmbranches
+name: helm-branches
 on:
   - push
   - workflow_dispatch
