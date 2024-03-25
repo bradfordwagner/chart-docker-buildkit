@@ -1,0 +1,41 @@
+{{- $root := . -}}
+{{- if .Values.driver.api_gateway.enabled -}}
+{{- range $i, $_ := until (int .Values.driver.replicas) }}
+{{- with $root }}
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: {{ .Release.Name }}-{{ $i }}
+spec:
+  parentRefs:
+    - name: {{ .Values.driver.api_gateway.parent_gateway.name }}
+      namespace: {{ .Values.driver.api_gateway.parent_gateway.namespace }}
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: {{ .Release.Name }}-{{ $i }}
+          port: {{ .Values.driver.port }}
+  hostnames:
+    - {{ printf .Values.driver.api_gateway.hostname_format $i }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-{{ $i }}
+  labels: {{- include "selector_labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  selector:
+    app: {{ .Release.Name }}
+    statefulset.kubernetes.io/pod-name: {{ .Release.Name }}-{{ $i }}
+  ports:
+    - appProtocol: grpc
+      port: {{ .Values.driver.port }}
+      protocol: TCP
+{{- end }}
+{{- end }}
+{{- end -}}

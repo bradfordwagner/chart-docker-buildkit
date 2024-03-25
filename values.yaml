@@ -21,3 +21,9 @@ driver:
     resources:
       requests:
         storage: 25Gi
+  api_gateway:
+    enabled: false
+    parent_gateway:
+      name: ""
+      namespace: ""
+    hostname_format: "my-host-%d.com"
