@@ -8,5 +8,6 @@ spec:
   selector:
     app: {{ .Release.Name }}
   ports:
-    - protocol: TCP
+    - appProtocol: grpc
       port: {{ .Values.driver.port }}
+      protocol: TCP
