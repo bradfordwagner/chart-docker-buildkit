@@ -26,4 +26,5 @@ driver:
     parent_gateway:
       name: ""
       namespace: ""
+    # scraped by service diccovery to land on the correct service
     hostname_format: "my-host-%d.com"
