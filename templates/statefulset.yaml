@@ -13,6 +13,8 @@ spec:
   template:
     metadata:
       labels: {{- include "selector_labels" . | nindent 8 }}
+      annotations:
+        hostname_format: {{ .Values.driver.api_gateway.hostnameFormat }}
     spec:
       containers:
         - name: main
