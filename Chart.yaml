@@ -2,5 +2,4 @@ apiVersion: v2
 name: bradfordwagner-docker-buildkit
 description: Installs docker kubernetes buildkit driver
 type: application
-appVersion: 1.0.0
-version: 1.5.0
+version: 1.5.1
