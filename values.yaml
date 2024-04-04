@@ -28,3 +28,11 @@ driver:
       namespace: ""
     # scraped by service diccovery to land on the correct service
     hostname_format: "my-host-%d.com"
+# buildkit consistent hash + service discovery
+bkch:
+  enabled: true
+  port: 8888
+  image:
+    pull_policy: IfNotPresent
+    repository: ghcr.io/bradfordwagner/bkch
+    tag: 0.2.0-debian_bookworm

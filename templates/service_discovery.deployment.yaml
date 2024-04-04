@@ -1,0 +1,27 @@
+{{- if .Values.bkch.enabled -}}
+{{- $driver_name := .Release.Name }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels: {{- include "selector_labels" . | nindent 4 }}
+  name: {{ $driver_name }}-bkch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-bkch
+  template:
+    metadata:
+      labels: 
+        app: {{ .Release.Name }}-bkch
+    spec:
+      serviceAccountName: {{ $driver_name }}-bkch
+      containers:
+      - name: main
+        imagePullPolicy: {{ .Values.bkch.image.pull_policy }}
+        image: {{ .Values.bkch.image.repository }}:{{ .Values.bkch.image.tag }}
+        command: [bkch]
+        args: [server]
+        ports:
+        - containerPort: {{ .Values.bkch.port }}
+{{- end }}
