@@ -27,7 +27,7 @@ driver:
       name: ""
       namespace: ""
     # scraped by service diccovery to land on the correct service
-    hostname_format: "my-host-%d.com"
+    hostname_format: my-host-%d.com
 # buildkit consistent hash + service discovery
 bkch:
   enabled: false
@@ -36,9 +36,9 @@ bkch:
       name: ""
       namespace: ""
     # scraped by service diccovery to land on the correct service
-    hostname: "my-host-bkch.com"
+    hostname: my-host-bkch.com
   port: 8888
   image:
     pull_policy: IfNotPresent
     repository: ghcr.io/bradfordwagner/bkch
-    tag: 0.2.0-debian_bookworm
+    tag: 0.2.1-debian_bookworm
