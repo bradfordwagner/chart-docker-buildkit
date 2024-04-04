@@ -28,10 +28,9 @@ metadata:
   labels:
     app: {{ .Release.Name }}-bkch
 spec:
-  {{/* clusterIP: None */}}
   selector:
     app: {{ .Release.Name }}-bkch
   ports:
-    - port: {{ .Values.driver.port }}
+    - port: {{ .Values.bkch.port }}
       protocol: TCP
 {{- end -}}
