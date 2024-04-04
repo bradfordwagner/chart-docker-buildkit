@@ -3,7 +3,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels: {{- include "selector_labels" . | nindent 4 }}
+  labels:
+    app: {{ .Release.Name }}-bkch
   name: {{ $driver_name }}-bkch
 spec:
   replicas: 1

@@ -30,7 +30,13 @@ driver:
     hostname_format: "my-host-%d.com"
 # buildkit consistent hash + service discovery
 bkch:
-  enabled: true
+  enabled: false
+  api_gateway:
+    parent_gateway:
+      name: ""
+      namespace: ""
+    # scraped by service diccovery to land on the correct service
+    hostname: "my-host-bkch.com"
   port: 8888
   image:
     pull_policy: IfNotPresent
