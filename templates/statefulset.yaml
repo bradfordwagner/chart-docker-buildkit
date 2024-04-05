@@ -14,7 +14,7 @@ spec:
     metadata:
       labels: {{- include "selector_labels" . | nindent 8 }}
       annotations:
-        bkch.service-discovery.api-gateway: {{ .Values.driver.api_gateway.hostname_format | quote }}
+        bkch.service-discovery.api-gateway: "tcp://{{ .Values.driver.api_gateway.hostname_format }}:443"
         bkch.service-discovery.in-cluster: {{ .Release.Name }}-%d.{{ .Release.Name }}.{{ .Release.Namespace }}.svc.cluster.local
     spec:
       containers:

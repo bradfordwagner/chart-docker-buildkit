@@ -13,7 +13,7 @@ spec:
       app: {{ .Release.Name }}-bkch
   template:
     metadata:
-      labels: 
+      labels:
         app: {{ .Release.Name }}-bkch
     spec:
       serviceAccountName: {{ $driver_name }}-bkch
