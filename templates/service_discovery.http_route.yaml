@@ -1,6 +1,7 @@
 {{- $root := . -}}
 {{- if .Values.bkch.enabled -}}
 {{ $service := printf "%s-bkch" .Release.Name }}
+{{ if .Values.driver.api_gateway.enabled }}
 ---
 apiVersion: gateway.networking.k8s.io/v1beta1
 kind: HTTPRoute
@@ -20,6 +21,7 @@ spec:
           port: {{ .Values.bkch.port }}
   hostnames:
     - {{ .Values.bkch.api_gateway.hostname }}
+{{- end }}
 ---
 apiVersion: v1
 kind: Service
