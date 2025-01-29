@@ -41,4 +41,4 @@ bkch:
   image:
     pull_policy: IfNotPresent
     repository: ghcr.io/bradfordwagner/bkch
-    tag: 0.2.1-debian_bookworm
+    tag: 0.5.1-debian_bookworm-slim
