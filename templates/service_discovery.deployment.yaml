@@ -23,6 +23,9 @@ spec:
         image: {{ .Values.bkch.image.repository }}:{{ .Values.bkch.image.tag }}
         command: [bkch]
         args: [server]
+        env:
+          - name: KUBERNETES_NAMESPACE
+            value: {{ .Release.Namespace }}
         ports:
         - containerPort: {{ .Values.bkch.port }}
 {{- end }}
