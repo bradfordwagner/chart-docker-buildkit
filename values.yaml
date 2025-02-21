@@ -41,7 +41,7 @@ bkch:
   image:
     pull_policy: IfNotPresent
     repository: ghcr.io/bradfordwagner/bkch
-    tag: 1.0.0-beta4
+    tag: 1.0.0
 
 argo:
   enabled: true
