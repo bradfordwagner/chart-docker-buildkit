@@ -41,10 +41,17 @@ bkch:
   image:
     pull_policy: IfNotPresent
     repository: ghcr.io/bradfordwagner/bkch
-    tag: 1.0.0-beta3
+    tag: 1.0.0-beta4
 
 argo:
   enabled: true
+  disk_maintenance:
+    parameters:
+      keep_duration: 48h
+      prune_timeout: 30s
+    cron:
+      enabled: true
+      schedule: "0 0 * * *" # daily at midnight
   service_account:
     create: true
     name: buildkit-workflow

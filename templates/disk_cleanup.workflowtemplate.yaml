@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: {{ .Release.Name }}-disk-cleanup
+  name: {{ .Release.Name }}-disk-maintenance
 spec:
   entrypoint: main
   templates:
@@ -10,9 +10,12 @@ spec:
       inputs:
         parameters:
           - name: keep_duration
-            value: 48h
+            value: {{ .Values.argo.disk_maintenance.parameters.keep_duration }}
+          - name: prune_timeout
+            value: {{ .Values.argo.disk_maintenance.parameters.prune_timeout }}
       container:
         image: {{ .Values.bkch.image.repository }}:{{ .Values.bkch.image.tag }}
+        imagePullPolicy: {{ .Values.bkch.image.pull_policy }}
         args: [disk_maintenance]
         env:
           - name: KUBERNETES_NAMESPACE
@@ -21,6 +24,25 @@ spec:
             value: {{ include "dns.in_cluster" . | quote }}
           - name: KEEP_DURATION
             value: {{ `{{ inputs.parameters.keep_duration }}` | quote }}
+          - name: PRUNE_TIMEOUT
+            value: {{ `{{ inputs.parameters.prune_timeout }}` | quote }}
           - name: SELECTOR_LABEL
             value: "app={{ .Release.Name }}"
+---
+{{- if .Values.argo.disk_maintenance.cron.enabled}}
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: {{ .Release.Name }}-disk-maintenance
+spec:
+  schedule: {{ .Values.argo.disk_maintenance.cron.schedule | quote }}
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 600
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  workflowSpec:
+    serviceAccountName: {{ .Values.argo.service_account.name }}
+    workflowTemplateRef:
+      name: {{ .Release.Name }}-disk-maintenance
+{{- end }}
 {{- end }}
