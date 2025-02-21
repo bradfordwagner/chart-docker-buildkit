@@ -21,11 +21,12 @@ spec:
       - name: main
         imagePullPolicy: {{ .Values.bkch.image.pull_policy }}
         image: {{ .Values.bkch.image.repository }}:{{ .Values.bkch.image.tag }}
-        command: [bkch]
         args: [server]
         env:
           - name: KUBERNETES_NAMESPACE
             value: {{ .Release.Namespace }}
+          - name: SELECTOR_LABEL
+            value: "app={{ .Release.Name }}"
         ports:
         - containerPort: {{ .Values.bkch.port }}
 {{- end }}

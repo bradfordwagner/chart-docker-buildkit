@@ -1,0 +1,26 @@
+{{- if .Values.argo.enabled -}}
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: {{ .Release.Name }}-disk-cleanup
+spec:
+  entrypoint: main
+  templates:
+    - name: main
+      inputs:
+        parameters:
+          - name: keep_duration
+            value: 48h
+      container:
+        image: {{ .Values.bkch.image.repository }}:{{ .Values.bkch.image.tag }}
+        args: [disk_maintenance]
+        env:
+          - name: KUBERNETES_NAMESPACE
+            value: {{ .Release.Namespace }}
+          - name: DNS_FORMAT_IN_CLUSTER
+            value: {{ include "dns.in_cluster" . | quote }}
+          - name: KEEP_DURATION
+            value: {{ `{{ inputs.parameters.keep_duration }}` | quote }}
+          - name: SELECTOR_LABEL
+            value: "app={{ .Release.Name }}"
+{{- end }}
