@@ -15,17 +15,17 @@ metadata:
   name: {{ $sa }}
 rules:
 - apiGroups: ['']
-  resources: 
+  resources:
     - pods
-  verbs: 
+  verbs:
     - get
     - list
     - watch
-- apiGroups: 
+- apiGroups:
     - apps
-  resources: 
+  resources:
     - statefulsets
-  verbs: 
+  verbs:
     - get
     - list
     - watch
