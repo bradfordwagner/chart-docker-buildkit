@@ -44,7 +44,7 @@ bkch:
     tag: 1.0.0
 
 argo:
-  enabled: true
+  enabled: false
   disk_maintenance:
     parameters:
       keep_duration: 48h
