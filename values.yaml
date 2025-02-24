@@ -53,5 +53,7 @@ argo:
       enabled: true
       schedule: "0 0 * * *" # daily at midnight
   service_account:
+    # if enabled creates sa/role/rb required to run the workflow
+    # if disabled only creates the role=service_account.name
     create: true
     name: buildkit-workflow
