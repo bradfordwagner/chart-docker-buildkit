@@ -5,6 +5,9 @@ metadata:
   name: {{ .Release.Name }}-disk-maintenance
 spec:
   entrypoint: main
+  {{ if .Values.driver.api_gateway.enabled }}
+  {{- include "workflow.istio-sidecar-configuration" . | nindent 2 }}
+  {{ end }}
   templates:
     - name: main
       inputs:
@@ -42,6 +45,9 @@ spec:
   failedJobsHistoryLimit: 1
   workflowSpec:
     serviceAccountName: {{ .Values.argo.service_account.name }}
+    {{ if .Values.driver.api_gateway.enabled }}
+    {{- include "workflow.istio-sidecar-configuration" . | nindent 4 }}
+    {{ end }}
     workflowTemplateRef:
       name: {{ .Release.Name }}-disk-maintenance
 {{- end }}
