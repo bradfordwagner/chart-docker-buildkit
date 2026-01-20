@@ -28,6 +28,24 @@ driver:
       namespace: ""
     # scraped by service diccovery to land on the correct service
     hostname_format: my-host-%d.com
+  securityContext:
+    privileged: true
+  readinessProbe:
+    exec:
+      command:
+        - buildctl
+        - debug
+        - workers
+    initialDelaySeconds: 5
+    periodSeconds: 5
+  livenessProbe:
+    exec:
+      command:
+        - buildctl
+        - debug
+        - workers
+    initialDelaySeconds: 5
+    periodSeconds: 5
 # buildkit consistent hash + service discovery
 bkch:
   enabled: false
