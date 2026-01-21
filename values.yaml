@@ -1,4 +1,22 @@
 driver:
+  extraVolumeMounts: |
+  - name: run
+    mountPath: /run
+  extraVolumes: |
+    - name: run
+      emptyDir: {}
+  securityContext:
+    privileged: false
+  readinessProbe:
+    tcpSocket:
+      port: 1234
+    initialDelaySeconds: 10
+    periodSeconds: 10
+  livenessProbe:
+    tcpSocket:
+      port: 1234
+    initialDelaySeconds: 10
+    periodSeconds: 10
   image:
     pull_policy: IfNotPresent
     repository: moby/buildkit
