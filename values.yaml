@@ -1,18 +1,22 @@
 driver:
-  extraVolumeMounts: |
-  - name: run
-    mountPath: /run
-  extraVolumes: |
-    - name: run
-      emptyDir: {}
   securityContext:
     privileged: false
   readinessProbe:
+    exec:
+      command:
+        - buildctl
+        - debug
+        - workers
     tcpSocket:
       port: 1234
     initialDelaySeconds: 10
     periodSeconds: 10
   livenessProbe:
+    exec:
+      command:
+        - buildctl
+        - debug
+        - workers
     tcpSocket:
       port: 1234
     initialDelaySeconds: 10
@@ -26,8 +30,6 @@ driver:
   config: ""
   # templatable string which will be used to set environment variables for the driver
   envFrom: ""
-  extraVolumes: ""
-  extraVolumeMounts: ""
   port: 1234
   args:
     - --addr
@@ -46,24 +48,7 @@ driver:
       namespace: ""
     # scraped by service diccovery to land on the correct service
     hostname_format: my-host-%d.com
-  securityContext:
-    privileged: true
-  readinessProbe:
-    exec:
-      command:
-        - buildctl
-        - debug
-        - workers
-    initialDelaySeconds: 5
-    periodSeconds: 5
-  livenessProbe:
-    exec:
-      command:
-        - buildctl
-        - debug
-        - workers
-    initialDelaySeconds: 5
-    periodSeconds: 5
+
 # buildkit consistent hash + service discovery
 bkch:
   enabled: false
