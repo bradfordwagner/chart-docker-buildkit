@@ -3,33 +3,29 @@ driver:
     privileged: false
   readinessProbe:
     exec:
-      command:
-        - buildctl
-        - debug
-        - workers
-    tcpSocket:
-      port: 1234
+      command: [buildctl, --addr, "unix:///run/buildkit/buildkitd.sock", debug, workers]
     initialDelaySeconds: 10
     periodSeconds: 10
   livenessProbe:
     exec:
-      command:
-        - buildctl
-        - debug
-        - workers
-    tcpSocket:
-      port: 1234
+      command: [buildctl, --addr, "unix:///run/buildkit/buildkitd.sock", debug, workers]
     initialDelaySeconds: 10
     periodSeconds: 10
   image:
     pull_policy: IfNotPresent
     repository: moby/buildkit
-    tag: v0.19.0
+    tag: v0.26.2-rootless
   replicas: 1
   # templatable configurationsy
   config: ""
   # templatable string which will be used to set environment variables for the driver
   envFrom: ""
+  extraVolumes: |
+    - name: run
+      emptyDir: {}
+  extraVolumeMounts: |
+    - name: run
+      mountPath: /run
   port: 1234
   args:
     - --addr
