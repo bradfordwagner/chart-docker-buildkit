@@ -1,24 +1,14 @@
 driver:
-  securityContext:
+  imageSecurityContext:
     privileged: false
   readinessProbe:
     exec:
-      command:
-        - buildctl
-        - debug
-        - workers
-    tcpSocket:
-      port: 1234
+      command: [buildctl, --addr, "unix:///run/buildkit/buildkitd.sock", debug, workers]
     initialDelaySeconds: 10
     periodSeconds: 10
   livenessProbe:
     exec:
-      command:
-        - buildctl
-        - debug
-        - workers
-    tcpSocket:
-      port: 1234
+      command: [buildctl, --addr, "unix:///run/buildkit/buildkitd.sock", debug, workers]
     initialDelaySeconds: 10
     periodSeconds: 10
   image:
@@ -27,9 +17,16 @@ driver:
     tag: v0.19.0
   replicas: 1
   # templatable configurationsy
-  config: ""
+  config:
   # templatable string which will be used to set environment variables for the driver
   envFrom: ""
+  env: ""
+  extraVolumes: |
+    - name: run
+      emptyDir: {}
+  extraVolumeMounts: |
+    - name: run
+      mountPath: /run
   port: 1234
   args:
     - --addr

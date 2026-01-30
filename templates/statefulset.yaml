@@ -26,7 +26,7 @@ spec:
           {{- end }}
           readinessProbe: {{- toYaml .Values.driver.readinessProbe | nindent 12 }}
           livenessProbe: {{- toYaml .Values.driver.livenessProbe | nindent 12 }}
-          securityContext: {{- toYaml .Values.driver.securityContext | nindent 12 }}
+          imageSecurityContext: {{- toYaml .Values.driver.imageSecurityContext | nindent 12 }}
           volumeMounts:
             - mountPath: /var/lib/buildkit
               name: data
@@ -37,6 +37,9 @@ spec:
             {{- end }}
           {{- if .Values.driver.envFrom }}
           envFrom: {{- tpl .Values.driver.envFrom . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.driver.env }}
+          env: {{- tpl .Values.driver.env . | nindent 12 }}
           {{- end }}
       volumes:
       - name: config
