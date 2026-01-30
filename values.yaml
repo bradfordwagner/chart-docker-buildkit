@@ -17,7 +17,7 @@ driver:
     tag: v0.19.0
   replicas: 1
   # templatable configurationsy
-  config: ""
+  config:
   # templatable string which will be used to set environment variables for the driver
   envFrom: ""
   extraVolumes: |
