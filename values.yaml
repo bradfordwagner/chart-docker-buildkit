@@ -20,6 +20,7 @@ driver:
   config:
   # templatable string which will be used to set environment variables for the driver
   envFrom: ""
+  env: ""
   extraVolumes: |
     - name: run
       emptyDir: {}
