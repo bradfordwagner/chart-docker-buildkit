@@ -1,6 +1,10 @@
 driver:
-  imageSecurityContext:
+  securityContext:
+    appArmorProfile:
+      type: Unconfined
     privileged: false
+    runAsGroup: 1000
+    runAsUser: 1000
   readinessProbe:
     exec:
       command: [buildctl, --addr, "unix:///run/buildkit/buildkitd.sock", debug, workers]
