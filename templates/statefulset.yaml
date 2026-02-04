@@ -26,7 +26,7 @@ spec:
           {{- end }}
           readinessProbe: {{- toYaml .Values.driver.readinessProbe | nindent 12 }}
           livenessProbe: {{- toYaml .Values.driver.livenessProbe | nindent 12 }}
-          imageSecurityContext: {{- toYaml .Values.driver.imageSecurityContext | nindent 12 }}
+          imageSecurityContext: {{- toYaml .Values.driver.imageSecurityContext }}
           volumeMounts:
             - mountPath: /var/lib/buildkit
               name: data
