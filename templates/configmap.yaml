@@ -11,4 +11,4 @@ data:
     # root is where all buildkit state is stored.
     root = "/var/lib/buildkit"
     # exposed app configuration
-    {{- tpl .Values.driver.config . | nindent 6 }}
+    {{- tpl .Values.driver.config . }}
