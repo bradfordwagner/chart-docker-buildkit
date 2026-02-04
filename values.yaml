@@ -1,5 +1,5 @@
 driver:
-  securityContext:
+  imageSecurityContext:
     appArmorProfile:
       type: Unconfined
     privileged: false
